@@ -2,21 +2,34 @@ import numpy as np
 import os 
 from enum import Enum
 import networkx as nx
+import os
 from . import route_card
 from .game_map import GameMap
+from .assets import assets as assets
 
-card_path = r'D:\my_project\saboteur\assets\route-cards'
+# card_path = r'..\assets\route-cards'
 N_ROWS = 15
 N_COLS = 13
 
 class PlaceResult(Enum):
     Card_exist = 1
-    bee = 2
-    cat = 3
+    Incorrect_dead_end = 2
+    Success = 3
+    Out_of_bound = 4
 
+
+def get_asset_path():
+    # card_path = r'..\assets\route-cards'
+    asset_path = os.path.abspath(assets.__file__)
+    asset_dir = os.path.dirname(asset_path)
+    card_path = os.path.join(asset_dir, 'route-cards')
+
+    return card_path
 
 class GameEnv():
     def init(self):
+
+        card_path = get_asset_path()
         self.cards, self.cards_dict = route_card.read_all_route_cards(card_path)
         self.game_graph = nx.Graph()
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
@@ -31,17 +44,40 @@ class GameEnv():
         self.game_graph = self._add_card_to_graph(self.game_graph, card)
         ###### debug
 
+    def _check_incorrect_dead_end(self,g, center_card, row, col):
+        incorrect_dead_end = [ False, False, False, False ]
+        for i in range(0,4):
+            rr , cc = self._get_adjacent_coordinate(row, col, i)
+            c_id = self.map[rr,cc]
+            adj_index = self._get_opposite_direction(i)
+
+            if c_id != 0 :
+                adj_card = self.cards_dict[c_id]
+                is_connected = nx.algorithms.shortest_paths.generic.has_path( g, 
+                                    center_card.get_node_name_dead(i), 
+                                    adj_card.get_node_name_open(adj_index) ) 
+                incorrect_dead_end[i] = is_connected
+
+        return incorrect_dead_end
+
     def test_place_route_card(self,card_id, row, col):
         card = self.cards_dict[card_id]
 
         if self.map[row,col] != 0 :
             return PlaceResult.Card_exist
 
-        ### place 
+        ### place trial
         test_g = self.game_graph.copy()
         test_g = self._place_route_card_trial_graph(test_g, card, row, col)
+        incorrect_dead_end = self._check_incorrect_dead_end(test_g, card, row, col)
+        if any( incorrect_dead_end ) :
+            return PlaceResult.Incorrect_dead_end
 
-        return test_g
+        ## no error, commit change
+        self.game_graph = test_g
+        self.map[row,col] = card_id
+
+        return PlaceResult.Success
 
     def _add_card_to_graph(self, g, card):
         return nx.algorithms.operators.binary.compose(g, card.g)
