@@ -3,13 +3,15 @@ import engine.route_card as route_card
 
 def test_loading():
 
-    engine.init()
+    env = engine.GameEnv()
+
+    env.init()
     assert(True)
 
 def test_read_card():
     card_path = r'D:\my_project\saboteur\assets\route-cards'
 
-    cards = route_card.read_all_route_cards(card_path)
+    cards , cards_dict = route_card.read_all_route_cards(card_path)
 
     print(len(cards))
 

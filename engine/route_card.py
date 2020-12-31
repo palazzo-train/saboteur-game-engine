@@ -98,6 +98,7 @@ def read_all_route_cards(card_path):
     path = os.path.join(card_path, '*')
 
     cards = []
+    cards_dict = {}
 
     for ff in glob.glob(path):
         filename = os.path.basename(ff)
@@ -105,5 +106,6 @@ def read_all_route_cards(card_path):
 
         c = RouteCard(ff, filename, prefix, card_id, route_code_list)
         cards.append(c)
+        cards_dict[card_id] = c
 
-    return cards
+    return cards , cards_dict
