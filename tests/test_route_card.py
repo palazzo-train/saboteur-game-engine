@@ -9,8 +9,9 @@ def test_loading():
     assert(True)
 
 def test_read_card():
-    card_path = engine.get_asset_path()
-    cards , cards_dict = route_card.read_all_route_cards(card_path)
+    asset_path = engine.get_asset_path()
+
+    cards , cards_dict = route_card.read_all_route_cards(asset_path)
 
     print(len(cards))
 

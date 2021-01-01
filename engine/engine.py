@@ -16,20 +16,17 @@ class PlaceResult(Enum):
     Success = 3
     Out_of_bound = 4
 
-
 def get_asset_path():
     # card_path = r'..\assets\route-cards'
     asset_path = os.path.abspath(assets.__file__)
     asset_dir = os.path.dirname(asset_path)
-    card_path = os.path.join(asset_dir, 'route-cards')
 
-    return card_path
+    return asset_dir 
 
 class GameEnv():
     def init(self):
 
-        card_path = get_asset_path()
-        self.cards, self.cards_dict = route_card.read_all_route_cards(card_path)
+        self.route_cards, self.route_cards_dict = route_card.read_all_route_cards( get_asset_path() )
         self.game_graph = nx.Graph()
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
 
@@ -39,7 +36,7 @@ class GameEnv():
         c = 5
         c_id = 210
         self.map[r,c] = c_id
-        card = self.cards_dict[c_id]
+        card = self.route_cards_dict[c_id]
         self.game_graph = self._add_card_to_graph(self.game_graph, card)
         ###### debug
 
@@ -51,7 +48,7 @@ class GameEnv():
             adj_index = self._get_opposite_direction(i)
 
             if c_id != 0 :
-                adj_card = self.cards_dict[c_id]
+                adj_card = self.route_cards_dict[c_id]
                 is_connected = nx.algorithms.shortest_paths.generic.has_path( g, 
                                     center_card.get_node_name_dead(i), 
                                     adj_card.get_node_name_open(adj_index) ) 
@@ -60,7 +57,7 @@ class GameEnv():
         return incorrect_dead_end
 
     def test_place_route_card(self,card_id, row, col):
-        card = self.cards_dict[card_id]
+        card = self.route_cards_dict[card_id]
 
         if self.map[row,col] != 0 :
             return PlaceResult.Card_exist, self.game_graph 
@@ -133,7 +130,7 @@ class GameEnv():
             c_id = self.map[rr,cc]
 
             if c_id != 0 :
-                adj_card = self.cards_dict[c_id]
+                adj_card = self.route_cards_dict[c_id]
                 test_g = self._add_card_to_graph(test_g, adj_card)
                 self._connecting_route_cards(test_g, card, adj_card, i)
 
