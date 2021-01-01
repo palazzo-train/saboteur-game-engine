@@ -4,7 +4,6 @@ from enum import Enum
 import networkx as nx
 import os
 from . import route_card
-from .game_map import GameMap
 from .assets import assets as assets
 
 # card_path = r'..\assets\route-cards'
@@ -64,14 +63,22 @@ class GameEnv():
         card = self.cards_dict[card_id]
 
         if self.map[row,col] != 0 :
-            return PlaceResult.Card_exist
+            return PlaceResult.Card_exist, self.game_graph 
 
         ### place trial
         test_g = self.game_graph.copy()
         test_g = self._place_route_card_trial_graph(test_g, card, row, col)
         incorrect_dead_end = self._check_incorrect_dead_end(test_g, card, row, col)
         if any( incorrect_dead_end ) :
-            return PlaceResult.Incorrect_dead_end
+            return PlaceResult.Incorrect_dead_end, test_g
+
+        return PlaceResult.Success, test_g
+
+    def place_route_card(self,card_id, row, col):
+        r , test_g = self.test_place_route_card(card_id, row, col)
+
+        if r != PlaceResult.Success:
+            return r
 
         ## no error, commit change
         self.game_graph = test_g

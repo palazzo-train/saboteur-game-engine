@@ -9,15 +9,7 @@ def test_loading():
     assert(True)
 
 def test_read_card():
-    import engine.assets.assets as assets
-    card_path = r'..\assets\route-cards'
-
-    import os
-    path = os.path.abspath(assets.__file__)
-    dd = os.path.dirname(path)
-    print('***')
-    print(dd)
-
+    card_path = engine.get_asset_path()
     cards , cards_dict = route_card.read_all_route_cards(card_path)
 
     print(len(cards))
