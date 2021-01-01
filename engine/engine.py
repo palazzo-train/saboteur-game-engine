@@ -26,19 +26,17 @@ def get_asset_path():
 class GameEnv():
     def init(self):
 
-        self.route_cards, self.route_cards_dict = route_card.read_all_route_cards( get_asset_path() )
+        asset_path =  get_asset_path() 
+        self.route_cards, self.route_cards_dict = route_card.read_all_route_cards( asset_path )
         self.game_graph = nx.Graph()
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
 
-
-        ###### debug
-        r = 4
-        c = 5
-        c_id = 210
-        self.map[r,c] = c_id
-        card = self.route_cards_dict[c_id]
-        self.game_graph = self._add_card_to_graph(self.game_graph, card)
-        ###### debug
+        ### start card
+        self.start_card_id, self.start_card = route_card.init_start_card(asset_path)
+        start_r = 3
+        start_c = int(N_COLS / 2 )
+        self.map[start_r,start_c] = self.start_card_id
+        self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
 
     def _check_incorrect_dead_end(self,g, center_card, row, col):
         incorrect_dead_end = [ False, False, False, False ]

@@ -26,3 +26,13 @@ def test_read_card():
         print_card(card)
 
     assert(True)
+
+def test_start_card():
+    asset_path = engine.get_asset_path()
+
+    print('start ...')
+    print(asset_path)
+
+    cards , cards_dict = route_card.init_start_card(asset_path)
+
+    print(cards)

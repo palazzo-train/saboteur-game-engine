@@ -94,9 +94,18 @@ def parse_filename(filename):
     
     return prefix , card_id , route_code_list
 
-def init_start_card():
+def init_start_card(asset_path):
+    card_path = os.path.join(asset_path, 'start-card')
+    path = os.path.join(card_path, '*')
 
-    c = RouteCard(ff, filename, prefix, card_id, route_code_list)
+    for ff in glob.glob(path):
+        filename = os.path.basename(ff)
+        prefix , card_id , route_code_list = parse_filename(filename)
+
+        c = RouteCard(ff, filename, prefix, card_id, route_code_list)
+
+        return card_id, c 
+
 
 def read_all_route_cards(asset_path):
     card_path = os.path.join(asset_path, 'route-cards')
@@ -104,8 +113,6 @@ def read_all_route_cards(asset_path):
 
     cards = []
     cards_dict = {}
-
-
 
     for ff in glob.glob(path):
         filename = os.path.basename(ff)
