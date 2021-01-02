@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import os 
 from enum import Enum
@@ -145,7 +146,7 @@ class GameEnv():
         adj_index = self._get_opposite_direction(direction_index)
         adj_side_node = adj_card.get_node_name_open(adj_index)
 
-        print(f'connecting {center_side_node} <--> {adj_side_node}')
+        logging.info(f'connecting {center_side_node} <--> {adj_side_node}')
 
         g.add_edge(center_side_node, adj_side_node)
 
@@ -154,11 +155,8 @@ class GameEnv():
 
         ### connecting 4 sides
         for i in range(0,4):
-            print(f'direct .... {i}')
-            print(row, col, i)
             rr , cc = self._get_adjacent_coordinate(row, col, i)
             c_id = self.map[rr,cc]
-            print(f"adj {rr} , {cc} , {c_id}")
 
             if c_id != 0 :
                 adj_card = self.route_cards_dict[c_id]
