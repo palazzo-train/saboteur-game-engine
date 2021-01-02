@@ -26,7 +26,7 @@ class RouteCard(BaseRouteCard):
             node_name = self.get_node_name_block(i)
             g.add_node(node_name)
 
-            node_name = self.get_node_name_dead(i)
+            node_name = self.get_node_name_invalid(i)
             g.add_node(node_name)
 
     def create_edges(self):
@@ -44,13 +44,13 @@ class RouteCard(BaseRouteCard):
 
                 self.g.add_edge( node_name1, node_name2)
 
-    def create_dead_end(self):
+    def create_invalid_end(self):
         for i in range(0,4):
             node_name = self.get_node_name_open(i)
             count = len( list(self.g.neighbors(node_name)))
             if count == 0 :
                 node_name1 = self.get_node_name_open(i)
-                node_name2 = self.get_node_name_dead(i)
+                node_name2 = self.get_node_name_invalid(i)
                 self.g.add_edge( node_name1, node_name2)
 
 
@@ -58,7 +58,7 @@ class RouteCard(BaseRouteCard):
         self.g = nx.Graph()
         self.create_nodes()
         self.create_edges()
-        self.create_dead_end()
+        self.create_invalid_end()
 
 
     def __init__(self, filepath, filename, card_type, card_id, route_code_list):

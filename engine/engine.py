@@ -13,7 +13,7 @@ N_COLS = 13
 
 class PlaceResult(Enum):
     Card_exist = 1
-    Incorrect_dead_end = 2
+    Invalid = 2
     Success = 3
     Out_of_bound = 4
     No_path_to_ladder = 5
@@ -40,8 +40,8 @@ class GameEnv():
         # self.map[start_r,start_c] = self.start_card_id
         # self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
 
-    def _check_incorrect_dead_end(self,g, center_card, row, col):
-        incorrect_dead_end = [ False, False, False, False ]
+    def _check_Invalid(self,g, center_card, row, col):
+        Invalid = [ False, False, False, False ]
         for i in range(0,4):
             rr , cc = self._get_adjacent_coordinate(row, col, i)
             c_id = self.map[rr,cc]
@@ -50,11 +50,11 @@ class GameEnv():
             if c_id != 0 :
                 adj_card = self.route_cards_dict[c_id]
                 is_connected = nx.algorithms.shortest_paths.generic.has_path( g, 
-                                    center_card.get_node_name_dead(i), 
+                                    center_card.get_node_name_invalid(i), 
                                     adj_card.get_node_name_open(adj_index) ) 
-                incorrect_dead_end[i] = is_connected
+                Invalid[i] = is_connected
 
-        return incorrect_dead_end
+        return Invalid
 
     def _check_has_path_to_ladder(self,g,card):
         pass
@@ -68,9 +68,9 @@ class GameEnv():
         ### place trial
         test_g = self.game_graph.copy()
         test_g = self._place_route_card_trial_graph(test_g, card, row, col)
-        incorrect_dead_end = self._check_incorrect_dead_end(test_g, card, row, col)
-        if any( incorrect_dead_end ) :
-            return PlaceResult.Incorrect_dead_end, test_g
+        Invalid = self._check_Invalid(test_g, card, row, col)
+        if any( Invalid ) :
+            return PlaceResult.Invalid, test_g
 
         return PlaceResult.Success, test_g
 

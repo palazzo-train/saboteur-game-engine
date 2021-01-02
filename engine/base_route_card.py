@@ -17,8 +17,8 @@ class BaseRouteCard:
 
         return node_name
 
-    def get_node_name_dead(self, i):
-        node_name = self.node_prefix + 'dead:' + str(i)
+    def get_node_name_invalid(self, i):
+        node_name = self.node_prefix + 'invalid:' + str(i)
 
         return node_name
 
