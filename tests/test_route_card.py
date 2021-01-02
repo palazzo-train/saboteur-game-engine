@@ -1,5 +1,6 @@
 import engine.engine as engine
-import engine.route_card as route_card
+import engine.route_card as RC 
+import engine.ladder_card as LC 
 
 def test_loading():
 
@@ -11,7 +12,7 @@ def test_loading():
 def test_read_card():
     asset_path = engine.get_asset_path()
 
-    cards , cards_dict = route_card.read_all_route_cards(asset_path)
+    cards , cards_dict = RC.read_all_route_cards(asset_path)
 
     print(len(cards))
 
@@ -33,6 +34,6 @@ def test_start_card():
     print('start ...')
     print(asset_path)
 
-    cards , cards_dict = route_card.init_start_card(asset_path)
+    cards , cards_dict = LC.init_start_card(asset_path)
 
     print(cards)

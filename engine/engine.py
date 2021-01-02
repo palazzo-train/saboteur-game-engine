@@ -3,7 +3,8 @@ import os
 from enum import Enum
 import networkx as nx
 import os
-from . import route_card
+from . import route_card as RC
+from . import ladder_card as LC
 from .assets import assets as assets
 
 # card_path = r'..\assets\route-cards'
@@ -15,6 +16,7 @@ class PlaceResult(Enum):
     Incorrect_dead_end = 2
     Success = 3
     Out_of_bound = 4
+    No_path_to_ladder = 5
 
 def get_asset_path():
     # card_path = r'..\assets\route-cards'
@@ -27,16 +29,16 @@ class GameEnv():
     def init(self):
 
         asset_path =  get_asset_path() 
-        self.route_cards, self.route_cards_dict = route_card.read_all_route_cards( asset_path )
+        self.route_cards, self.route_cards_dict = RC.read_all_route_cards( asset_path )
         self.game_graph = nx.Graph()
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
 
         ### start card
-        self.start_card_id, self.start_card = route_card.init_start_card(asset_path)
-        start_r = 3
-        start_c = int(N_COLS / 2 )
-        self.map[start_r,start_c] = self.start_card_id
-        self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
+        # self.start_card_id, self.start_card = LC.init_start_card(asset_path)
+        # start_r = 3
+        # start_c = int(N_COLS / 2 )
+        # self.map[start_r,start_c] = self.start_card_id
+        # self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
 
     def _check_incorrect_dead_end(self,g, center_card, row, col):
         incorrect_dead_end = [ False, False, False, False ]
@@ -53,6 +55,9 @@ class GameEnv():
                 incorrect_dead_end[i] = is_connected
 
         return incorrect_dead_end
+
+    def _check_has_path_to_ladder(self,g,card):
+        pass
 
     def test_place_route_card(self,card_id, row, col):
         card = self.route_cards_dict[card_id]
