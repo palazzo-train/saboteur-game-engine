@@ -34,6 +34,8 @@ def test_start_card():
     print('start ...')
     print(asset_path)
 
-    cards , cards_dict = LC.init_start_card(asset_path)
+    card_id , card = LC.init_start_card(asset_path)
 
-    print(cards)
+    print(card_id)
+    print(card.g.nodes)
+    print(card.g.edges)
