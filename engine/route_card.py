@@ -48,7 +48,6 @@ def read_all_route_cards(asset_path):
     card_path = os.path.join(asset_path, 'route-cards')
     path = os.path.join(card_path, '*')
 
-    cards = []
     cards_dict = {}
 
     for ff in glob.glob(path):
@@ -56,7 +55,6 @@ def read_all_route_cards(asset_path):
         prefix , card_id , route_code_list = BaseRouteCard.parse_filename(filename)
 
         c = RouteCard(ff, filename, prefix, card_id, route_code_list)
-        cards.append(c)
         cards_dict[card_id] = c
 
-    return cards , cards_dict
+    return cards_dict

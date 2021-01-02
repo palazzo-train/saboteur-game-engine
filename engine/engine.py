@@ -29,7 +29,7 @@ class GameEnv():
     def init(self):
 
         asset_path =  get_asset_path() 
-        self.route_cards, self.route_cards_dict = RC.read_all_route_cards( asset_path )
+        self.route_cards_dict = RC.read_all_route_cards( asset_path )
         self.game_graph = nx.Graph()
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
 
@@ -39,6 +39,13 @@ class GameEnv():
         start_c = int(N_COLS / 2 )
         self.map[start_r,start_c] = self.start_card_id
         self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
+
+        self.route_cards_dict[self.start_card_id] = self.start_card
+
+        ### all ladder cards
+        self.ladder_cards_dict = {}
+        self.ladder_cards_dict[self.start_card_id] = self.start_card
+
 
     def _check_Invalid(self,g, center_card, row, col):
         Invalid = [ False, False, False, False ]
@@ -57,7 +64,22 @@ class GameEnv():
         return Invalid
 
     def _check_has_path_to_ladder(self,g,card):
-        pass
+        for ladder_id in self.ladder_cards_dict :
+            ladder_card = self.ladder_cards_dict[ladder_id]
+
+            ladder_node = ladder_card.get_node_name_ladder()
+
+            ### check has path from all direction
+            for i in range(0,4):
+                is_connected = nx.algorithms.shortest_paths.generic.has_path( g, 
+                                    ladder_node,
+                                    card.get_node_name_open(i) ) 
+
+                if is_connected:
+                    return True
+
+        #### no path to any ladder
+        return False
 
     def test_place_route_card(self,card_id, row, col):
         card = self.route_cards_dict[card_id]
@@ -71,6 +93,9 @@ class GameEnv():
         Invalid = self._check_Invalid(test_g, card, row, col)
         if any( Invalid ) :
             return PlaceResult.Invalid, test_g
+
+        if not self._check_has_path_to_ladder(test_g,card) :
+            return PlaceResult.No_path_to_ladder, test_g
 
         return PlaceResult.Success, test_g
 
@@ -129,8 +154,11 @@ class GameEnv():
 
         ### connecting 4 sides
         for i in range(0,4):
+            print(f'direct .... {i}')
+            print(row, col, i)
             rr , cc = self._get_adjacent_coordinate(row, col, i)
             c_id = self.map[rr,cc]
+            print(f"adj {rr} , {cc} , {c_id}")
 
             if c_id != 0 :
                 adj_card = self.route_cards_dict[c_id]

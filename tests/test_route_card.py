@@ -12,9 +12,9 @@ def test_loading():
 def test_read_card():
     asset_path = engine.get_asset_path()
 
-    cards , cards_dict = RC.read_all_route_cards(asset_path)
+    cards_dict = RC.read_all_route_cards(asset_path)
 
-    print(len(cards))
+    print(len(cards_dict))
 
     def print_card(card):
         print('card ' + card.filename)
@@ -23,7 +23,8 @@ def test_read_card():
         print(card.g.nodes)
         print()
 
-    for card in cards:
+    for card_id in cards_dict:
+        card = cards_dict[card_id]
         print_card(card)
 
     assert(True)
