@@ -12,6 +12,17 @@ class StartCard(BaseRouteCard):
 
     def create_graph(self):
         self.g = nx.Graph()
+        self.create_nodes()
+
+    def create_nodes(self):
+        g = self.g 
+
+        for i in range(0,4):
+            node_name = self.get_node_name_open(i)
+            g.add_node(node_name)
+
+            node_name = self.get_node_name_invalid(i)
+            g.add_node(node_name)
 
 
 def init_start_card(asset_path):
