@@ -34,11 +34,11 @@ class GameEnv():
         self.map = np.zeros( [N_ROWS,N_COLS], dtype=int)
 
         ### start card
-        # self.start_card_id, self.start_card = LC.init_start_card(asset_path)
-        # start_r = 3
-        # start_c = int(N_COLS / 2 )
-        # self.map[start_r,start_c] = self.start_card_id
-        # self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
+        self.start_card_id, self.start_card = LC.init_start_card(asset_path)
+        start_r = 3
+        start_c = int(N_COLS / 2 )
+        self.map[start_r,start_c] = self.start_card_id
+        self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
 
     def _check_Invalid(self,g, center_card, row, col):
         Invalid = [ False, False, False, False ]
