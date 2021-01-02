@@ -83,6 +83,9 @@ class GameEnv():
         return False
 
     def test_place_route_card(self,card_id, row, col):
+        if row < 0 or row >= N_ROWS or col < 0 or col >= N_COLS:
+            return PlaceResult.Out_of_bound, self.game_graph
+
         card = self.route_cards_dict[card_id]
 
         if self.map[row,col] != 0 :
