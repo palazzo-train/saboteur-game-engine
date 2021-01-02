@@ -9,8 +9,8 @@ from . import ladder_card as LC
 from .assets import assets as assets
 
 # card_path = r'..\assets\route-cards'
-N_ROWS = 15
-N_COLS = 13
+N_ROWS = 13
+N_COLS = 15
 
 class PlaceResult(Enum):
     Card_exist = 1
@@ -36,8 +36,8 @@ class GameEnv():
 
         ### start card
         self.start_card_id, self.start_card = LC.init_start_card(asset_path)
-        start_r = 3
-        start_c = int(N_COLS / 2 )
+        start_r = int(N_ROWS / 2 ) 
+        start_c = 3
         self.map[start_r,start_c] = self.start_card_id
         self.game_graph = self._add_card_to_graph(self.game_graph, self.start_card)
 
