@@ -1,8 +1,8 @@
 # from unittest.mock import patch 
 import pytest 
 import networkx as nx
-import engine.engine as engine
-import engine.route_card as route_card
+import engine.game_env.engine as engine
+import engine.game_env.route_card as route_card
 
 from matplotlib import pyplot as plt
 
