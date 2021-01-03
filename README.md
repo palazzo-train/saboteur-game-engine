@@ -19,3 +19,4 @@
 
 #### SAM Errors
 [ValidationError Stack:arn aws cloudformation stack is in ROLLBACK_COMPLETE state and can not be updated](https://stackoverflow.com/questions/57932734/validationerror-stackarn-aws-cloudformation-stack-is-in-rollback-complete-state)
+`Unzipped size must be smaller than 262144000 bytes (Service: AWSLambdaInternal; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 4a0e9e6a-bdcb-4393-bf93-e1f192edcb24; Proxy: null)`
