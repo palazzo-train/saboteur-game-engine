@@ -16,3 +16,6 @@
 
 #### VS Code, ctrl-shift-P
 `AWS: View AWS Toolkit Logs`
+
+#### SAM Errors
+[ValidationError Stack:arn aws cloudformation stack is in ROLLBACK_COMPLETE state and can not be updated](https://stackoverflow.com/questions/57932734/validationerror-stackarn-aws-cloudformation-stack-is-in-rollback-complete-state)
