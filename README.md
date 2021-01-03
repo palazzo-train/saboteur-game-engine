@@ -20,3 +20,6 @@
 #### SAM Errors
 [ValidationError Stack:arn aws cloudformation stack is in ROLLBACK_COMPLETE state and can not be updated](https://stackoverflow.com/questions/57932734/validationerror-stackarn-aws-cloudformation-stack-is-in-rollback-complete-state)  
 `Unzipped size must be smaller than 262144000 bytes (Service: AWSLambdaInternal; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 4a0e9e6a-bdcb-4393-bf93-e1f192edcb24; Proxy: null)`  
+
+#### First Simple working AWS template yaml Version
+[First Simple working AWS template yaml Version](https://github.com/palazzo-train/saboteur-game-engine/blob/77e8cada1cfd3bd9880a41d141b0ab2b172e3d80/template.yaml#L24)
