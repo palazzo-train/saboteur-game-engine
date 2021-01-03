@@ -10,3 +10,9 @@
 5. change the hander to hander object of [magnum](https://github.com/palazzo-train/saboteur-game-engine/blob/3aec2cf7333dbf13c4898c7e6cb8910ef1898cc4/template.yaml#L18)
 6. In vscode, ctrl-shift-P
 7. type : `AWS: Deploy`
+
+
+### Quick help
+
+#### VS Code, ctrl-shift-P
+`AWS: View AWS Toolkit Logs`
