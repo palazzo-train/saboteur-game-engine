@@ -1,7 +1,6 @@
 import json
 from fastapi import FastAPI
 from .v1.routers import router
-from mangum import Mangum
 
 
 from engine.game_env.engine import GameEnv
@@ -30,6 +29,3 @@ def read_init():
     m_json = json.dumps(m.tolist())
 
     return {"game map": m_json }
-
-# to make it work with Amazon Lambda, we create a handler object
-handler = Mangum(app=app)
